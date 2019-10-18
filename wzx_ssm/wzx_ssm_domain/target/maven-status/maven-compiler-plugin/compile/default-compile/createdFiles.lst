@@ -1,0 +1,8 @@
+com\wzx\ssm\domain\UserInfo.class
+com\wzx\ssm\domain\Member.class
+com\wzx\ssm\domain\Role.class
+com\wzx\ssm\domain\Permission.class
+com\wzx\ssm\domain\Traveller.class
+com\wzx\ssm\domain\Product.class
+com\wzx\ssm\domain\SysLog.class
+com\wzx\ssm\domain\Orders.class

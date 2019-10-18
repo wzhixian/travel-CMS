@@ -1,0 +1,7 @@
+com\wzx\ssm\controller\LogAop.class
+com\wzx\ssm\controller\PermissionController.class
+com\wzx\ssm\controller\UserController.class
+com\wzx\ssm\controller\OrdersController.class
+com\wzx\ssm\controller\RoleController.class
+com\wzx\ssm\controller\ProductController.class
+com\wzx\ssm\controller\SysLogController.class

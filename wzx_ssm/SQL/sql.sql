@@ -1,0 +1,201 @@
+SELECT REPLACE(UUID(),'-',''),REPLACE(UUID(),'-','');
+SELECT MD5(UUID()),MD5(UUID());
+
+CREATE TABLE aa(
+	id VARCHAR(32) DEFAULT UUID() PRIMARY KEY,
+	NAME VARCHAR(5)
+)
+
+-- 产品
+CREATE TABLE product(
+id VARCHAR(32) PRIMARY KEY,
+productNum VARCHAR(50) NOT NULL UNIQUE,
+productName VARCHAR(50),
+cityName VARCHAR(50),
+DepartureTime TIMESTAMP,
+productPrice DOUBLE,
+productDesc VARCHAR(500),
+productStatus INT
+)
+SELECT TMP_PAGE.*, ROWNUM ROW_ID FROM ( SELECT * FROM orders ) TMP_PAGE WHERE ROW_ID <= 3;
+-- uuid自动生成触发器
+CREATE TRIGGER tri_auto_uuid_product BEFORE INSERT ON product FOR EACH ROW INSERT INTO product(id) VALUES(REPLACE(UUID(),'-',''));
+
+/*删除触发器*/
+DROP TRIGGER IF EXISTS tri_auto_uuid
+
+INSERT INTO PRODUCT (id, productnum, productname, cityname, productprice,
+productdesc, productstatus)
+VALUES ('676C5BD1D35E429A8C2E114939C5685A', 'itcast-002', '北京三日游', '北京', 1200, '不错的旅行', 1);
+INSERT INTO PRODUCT (id, productnum, productname, cityname, productprice,
+productdesc, productstatus)
+VALUES ('12B7ABF2A4C544568B0A7C69F36BF8B7', 'itcast-003', '上海五日游', '上海', 1800, '魔都我来了', 0);
+INSERT INTO PRODUCT (id, productnum, productname, cityname, productprice,
+productdesc, productstatus)
+VALUES ('9F71F01CB448476DAFB309AA6DF9497F', 'itcast-001', '北京三日游', '北京', 1200, '不错的旅行', 1);
+
+INSERT INTO product(id,productNum,productName,cityName,DepartureTime,productPrice,productDesc,productStatus) VALUES(REPLACE(UUID(),'-',''),'itcast-005','长沙一日游','长沙','2019-09-18 18:47',1888,'长沙nice',1);
+
+-- 订单
+CREATE TABLE orders(
+	id VARCHAR(32) PRIMARY KEY,
+	orderNum VARCHAR(20) NOT NULL UNIQUE,
+	orderTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	peopleCount INT,
+	orderDesc VARCHAR(500),
+	payType INT,
+	orderStatus INT,
+	productId VARCHAR(32),
+	memberId VARCHAR(32),
+	FOREIGN KEY (productId) REFERENCES product(id),
+	FOREIGN KEY (memberId) REFERENCES member(id)
+)
+
+SELECT * FROM traveller WHERE id IN (SELECT travellerId FROM order_traveller WHERE orderId='E4DD4C45EED84870ABA83574A801083E');
+SELECT * FROM member WHERE id = 'E61D65F673D54F68B0861025C69773DB';
+
+INSERT INTO orders (id, orderNum, peopleCount, orderDesc, payType, orderStatus,
+	productId, memberId) VALUES ('0E7231DC797C486290E8713CA3C6ECCC', '12345', 2, '没什么', 0, 1, '12B7ABF2A4C544568B0A7C69F36BF8B7',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('5DC6A48DD4E94592AE904930EA866AFA', '54321', 2, '没什么', 0, 1, '12B7ABF2A4C544568B0A7C69F36BF8B7',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('2FF351C4AC744E2092DCF08CFD314420', '67890', 2, '没什么', 0, 1, '23fdb25adacf11e9896400e04c361301',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('A0657832D93E4B10AE88A2D4B70B1A28', '98765', 2, '没什么', 0, 1, '23fdb25adacf11e9896400e04c361301',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('E4DD4C45EED84870ABA83574A801083E', '11111', 2, '没什么', 0, 1, '23fdb25adacf11e9896400e04c361301',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('96CC8BD43C734CC2ACBFF09501B4DD5D', '22222', 2, '没什么', 0, 1, '23fdb25adacf11e9896400e04c361301',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('55F9AF582D5A4DB28FB4EC3199385762', '33333', 2, '没什么', 0, 1, '9F71F01CB448476DAFB309AA6DF9497F',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('CA005CF1BE3C4EF68F88ABC7DF30E976', '44444', 2, '没什么', 0, 1, '9F71F01CB448476DAFB309AA6DF9497F',
+	'E61D65F673D54F68B0861025C69773DB');
+INSERT INTO ORDERS (id, ordernum, peoplecount, orderdesc, paytype, orderstatus,
+	productid, memberid) VALUES ('3081770BC3984EF092D9E99760FDABDE', '55555', 2, '没什么', 0, 1, '9F71F01CB448476DAFB309AA6DF9497F',
+	'E61D65F673D54F68B0861025C69773DB');
+
+-- 会员
+CREATE TABLE member(
+id VARCHAR(32) PRIMARY KEY,
+NAME VARCHAR(20),
+nickname VARCHAR(20),
+phoneNum VARCHAR(20),
+email VARCHAR(20)
+)
+INSERT INTO MEMBER (id, NAME, nickname, phonenum, email) VALUES ('E61D65F673D54F68B0861025C69773DB', '张三', '小三', '18888888888', 'zs@163.com');
+
+-- 旅客
+CREATE TABLE traveller(
+	id VARCHAR(32) PRIMARY KEY,
+	NAME VARCHAR(20),
+	sex VARCHAR(20),
+	phoneNum VARCHAR(20),
+	credentialsType INT,
+	credentialsNum VARCHAR(50),
+	travellerType INT
+)
+INSERT INTO TRAVELLER (id, NAME, sex, phonenum, credentialstype, credentialsnum, travellertype)
+VALUES ('3FE27DF2A4E44A6DBC5D0FE4651D3D3E', '张龙', '男', '13333333333', 0,
+'123456789009876543', 0);
+INSERT INTO TRAVELLER (id, NAME, sex, phonenum, credentialstype, credentialsnum, travellertype)
+VALUES ('EE7A71FB6945483FBF91543DBE851960', '张小龙', '男', '15555555555', 0,
+'987654321123456789', 1);
+
+
+CREATE TABLE order_traveller(
+orderId VARCHAR(32),
+travellerId VARCHAR(32),
+PRIMARY KEY (orderId,travellerId),
+FOREIGN KEY (orderId) REFERENCES orders(id),
+FOREIGN KEY (travellerId) REFERENCES traveller(id)
+)
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('0E7231DC797C486290E8713CA3C6ECCC', '3FE27DF2A4E44A6DBC5D0FE4651D3D3E');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('2FF351C4AC744E2092DCF08CFD314420', '3FE27DF2A4E44A6DBC5D0FE4651D3D3E');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('3081770BC3984EF092D9E99760FDABDE', 'EE7A71FB6945483FBF91543DBE851960');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('55F9AF582D5A4DB28FB4EC3199385762', 'EE7A71FB6945483FBF91543DBE851960');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('5DC6A48DD4E94592AE904930EA866AFA', '3FE27DF2A4E44A6DBC5D0FE4651D3D3E');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('96CC8BD43C734CC2ACBFF09501B4DD5D', 'EE7A71FB6945483FBF91543DBE851960');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('A0657832D93E4B10AE88A2D4B70B1A28', '3FE27DF2A4E44A6DBC5D0FE4651D3D3E');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('CA005CF1BE3C4EF68F88ABC7DF30E976', 'EE7A71FB6945483FBF91543DBE851960');
+INSERT INTO ORDER_TRAVELLER (orderid, travellerid)
+VALUES ('E4DD4C45EED84870ABA83574A801083E', 'EE7A71FB6945483FBF91543DBE851960');
+
+-- 用户表
+CREATE TABLE users(
+	id VARCHAR(32) PRIMARY KEY,--  DEFAULT SYS_GUID() 
+	email VARCHAR(50) UNIQUE NOT NULL,
+	username VARCHAR(50),
+	PASSWORD VARCHAR(50),
+	phoneNum VARCHAR(20),
+	STATUS INT
+)
+SELECT * FROM users;
+SELECT * FROM role WHERE id IN (SELECT roleId FROM users_role WHERE userId = 'D4EE6C13EED84870ABA83574A801083E');
+
+INSERT INTO permission  VALUES(REPLACE(UUID(),'-',''),'user findAll','/user/findAll.do');
+INSERT INTO permission  VALUES(REPLACE(UUID(),'-',''),'user findById','/user/findById.do');
+
+e7c1e301dfa211e98cc700ff6e2c2cfa
+e997ca26dfa211e98cc700ff6e2c2cfa
+INSERT INTO role_permission VALUES('e7c1e301dfa211e98cc700ff6e2c2cfa','F7EC6B67EED84870ABA83574A801083E');
+INSERT INTO role_permission VALUES('e997ca26dfa211e98cc700ff6e2c2cfa','F7EC6B67EED84870ABA83574A801083E');B9AC8D12CEA23470ABA83574A801083E F7EC6B67EED84870ABA83574A801083E
+
+INSERT INTO role_permission VALUES('e7c1e301dfa211e98cc700ff6e2c2cfa','B9AC8D12CEA23470ABA83574A801083E');c35f9ff8df9611e98cc700ff6e2c2cfa D4EE6C13EED84870ABA83574A801083E
+-- 角色表
+CREATE TABLE role(
+	id VARCHAR(32) PRIMARY KEY,--  DEFAULT SYS`users_role`_GUID()
+	roleName VARCHAR(50) ,
+	roleDesc VARCHAR(50)
+)
+
+-- 用户与角色关联关系
+CREATE TABLE users_role(
+	userId VARCHAR(32),
+	roleId VARCHAR(32),
+	PRIMARY KEY(userId,roleId),
+	FOREIGN KEY (userId) REFERENCES users(id),
+	FOREIGN KEY (roleId) REFERENCES role(id)
+)
+
+-- 资源权限表
+CREATE TABLE permission(
+	id VARCHAR(32) PRIMARY KEY,-- DEFAULT SYS_GUID() 
+	permissionName VARCHAR(50) ,
+	url VARCHAR(50)
+)
+
+-- 权限资源与角色关联关系
+CREATE TABLE role_permission(
+	permissionId VARCHAR(32),
+	roleId VARCHAR(32),
+	PRIMARY KEY(permissionId,roleId),
+	FOREIGN KEY (permissionId) REFERENCES permission(id),
+	FOREIGN KEY (roleId) REFERENCES role(id)
+)
+
+-- 日志表信息描述sysLog
+CREATE TABLE sysLog(
+	id VARCHAR(32) PRIMARY KEY,-- DEFAULT SYS_GUID() 
+	visitTime TIMESTAMP,
+	username VARCHAR(50),
+	ip VARCHAR(30),
+	url VARCHAR(50),
+	executionTime INT,
+	method VARCHAR(200)
+)
